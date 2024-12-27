@@ -1,0 +1,39 @@
+[
+  {
+    "path": "D:\\retro\\amstrad\\1942 (1986)(Elite Systems)\\1942 (1986)(Elite Systems).dsk",
+    "label": "1942 (Elite Systems)",
+    "core_path": "C:\\RetroArch-Win64\\cores\\cap32_libretro.dll",
+    "core_name": "Amstrad - CPC/GX4000 (Caprice32)",
+    "crc32": "DA5BFA98|crc",
+    "db_name": "Amstrad - CPC.lpl"
+  },
+  {
+    "path": "D:\\retro\\amstrad\\3D Grand Prix (1985)(Amsoft)\\3D Grand Prix (1985)(Amsoft).dsk",
+    "label": "3D Grand Prix (Amsoft)",
+    "core_path": "C:\\RetroArch-Win64\\cores\\cap32_libretro.dll",
+    "core_name": "Amstrad - CPC/GX4000 (Caprice32)",
+    "crc32": "6EE0D404|crc",
+    "db_name": "Amstrad - CPC.lpl"
+  },
+  {
+    "path": "D:\\retro\\amstrad\\Airwolf (1985)(Elite Systems - Amsoft)\\Airwolf (1985)(Elite Systems - Amsoft).dsk",
+    "label": "Airwolf (Elite Systems - Amsoft)",
+    "core_path": "C:\\RetroArch-Win64\\cores\\cap32_libretro.dll",
+    "core_name": "Amstrad - CPC/GX4000 (Caprice32)",
+    "crc32": "C42E7465|crc",
+    "db_name": "Amstrad - CPC.lpl"
+  },
+  {
+    "path": "D:\\retro\\amstrad\\Jet Set Willy (1985)(Software Projects)\\Jet_Set_Willy_1985_Software_Projects.dsk",
+    "label": "Jet Set Willy (Software Projects)",
+    "core_path": "C:\\RetroArch-Win64\\cores\\cap32_libretro.dll",
+    "core_name": "Amstrad - CPC/GX4000 (Caprice32)",
+    "crc32": "E6B7889C|crc",
+    "db_name": "Amstrad - CPC.lpl"
+  },
+  {
+    "path": "D:\\retro\\MAME\\doapp.zip",
+    "label": "Dead Or Alive ++ (Japan)",
+    "core_path": "C:\\RetroArch-Win64\\cores\\mame2010_libretro.dll"
+  }
+]
