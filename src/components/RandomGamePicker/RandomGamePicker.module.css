@@ -1,0 +1,55 @@
+.container {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.randomGame {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.randomGame h2 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.randomGame p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.finalGameLabel {
+  font-size: 24px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.thumbnail {
+  width: 100px;
+  height: auto;
+  margin-top: 10px;
+}
