@@ -1,0 +1,9 @@
+.logo {
+  display: flex;
+  height: 2.5em;
+  align-items: center;
+}
+.name {
+  font-weight: 700;
+  margin-left: 0.5em;
+}

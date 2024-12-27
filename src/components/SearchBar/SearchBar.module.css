@@ -1,0 +1,15 @@
+.searchBar {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid #ffcc00; /* Yellow border */
+  background-color: #000000; /* Black background */
+  color: #ffcc00; /* Yellow text color */
+  font-size: 1rem;
+  box-sizing: border-box;
+  font-family: 'RetroPixel', sans-serif;
+}
+
+.searchBar::placeholder {
+  color: #ffcc00; /* Yellow placeholder text */
+  font-family: 'RetroPixel', sans-serif;
+}

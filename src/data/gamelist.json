@@ -359,7 +359,7 @@
       "crc32": "00000000|crc",
       "db_name": "MAME 2010.lpl",
       "id": "e20f91a8-e9a4-4192-9f27-3b9bcbfe0c84",
-      "thumb_url": "https://example.com/thumbnail.jpg"
+      "thumb_url": "4d503daf-3036-47d3-9463-68c506a056af.jpg"
     },
     {
       "path": "D:\\retro\\MAME\\asterix.zip",
@@ -1629,7 +1629,7 @@
       "crc32": "CD70D8C2|crc",
       "db_name": "Sony - PlayStation.lpl",
       "id": "2c0aa447-e97c-4810-918a-d88e06b21233",
-      "thumb_url": "https://example.com/thumbnail.jpg"
+      "thumb_url": "5bf91f6d-0ada-48b3-8511-bbcaf5b7823d.jpg"
     },
     {
       "path": "D:\\retro\\nes\\Street Fighter Collection 2 (Europe)\\Street Fighter Collection 2 (Europe).cue",
@@ -1819,7 +1819,7 @@
       "crc32": "1D0E7063|crc",
       "db_name": "Nintendo - Super Nintendo Entertainment System.lpl",
       "id": "000a8a72-a04f-4ccc-9c4f-260e0af3f5dc",
-      "thumb_url": "https://example.com/thumbnail.jpg"
+      "thumb_url": "4d503daf-3036-47d3-9463-68c506a056af.jpg"
     },
     {
       "path": "D:\\retro\\snes\\Chrono Trigger\\Chrono Trigger.smc",
@@ -2179,7 +2179,7 @@
       "crc32": "",
       "db_name": "",
       "id": "4e2c2529-8cda-4993-98d4-259436ef4736",
-      "thumb_url": "https://en.wikipedia.org/wiki/One_Piece:_Grand_Adventure#/media/File:One_Piece_-_Grand_Adventure_Coverart.jpg"
+      "thumb_url": "one-piece-grand-adventure.jpg"
     },
     {
       "path": "",

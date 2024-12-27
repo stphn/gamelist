@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { ItemList } from './components/ItemList'
-import RandomGamePicker from './components/RandomGamePicker/RandomGamePicker'
+import RandomGamePicker from './components/RandomGamePicker'
+import Header from './components/Header'
 import './App.css'
 
 function App() {
   const [theme, setTheme] = useState('light')
+  const [showItemList, setShowItemList] = useState(false)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -14,14 +16,20 @@ function App() {
     setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'))
   }
 
+  const handleShowItemList = () => {
+    setShowItemList((prevShowItemList) => !prevShowItemList)
+  }
+
   return (
-    <div>
-      <h1>Game List</h1>
-      <button onClick={toggleTheme}>
-        Switch to {theme === 'light' ? 'Dark' : 'Light'} Theme
-      </button>
-      <RandomGamePicker />
-      <ItemList />
+    <div id="root">
+      <Header theme={theme} toggleTheme={toggleTheme} />
+      <div className="main-content">
+        <RandomGamePicker />
+        <button onClick={handleShowItemList}>
+          {showItemList ? 'Hide Game List' : 'Show Game List'}
+        </button>
+        {showItemList && <ItemList />}
+      </div>
     </div>
   )
 }
