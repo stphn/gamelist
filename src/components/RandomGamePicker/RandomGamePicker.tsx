@@ -18,6 +18,18 @@ interface Game {
   thumb_url: string
 }
 
+const getAllImageSrcs = (thumbUrl: string): string[] => {
+  try {
+    const images = import.meta.glob('./thumbs/**/*.{png,avif,jpg,jpeg}')
+    const imageKeys = Object.keys(images).filter((key) =>
+      key.includes(thumbUrl),
+    )
+    return imageKeys.map((key) => key.replace('./thumbs/', ''))
+  } catch {
+    return []
+  }
+}
+
 const RandomGamePicker = () => {
   // State variables
   const [currentGame, setCurrentGame] = useState<Game | null>(null)
@@ -25,6 +37,7 @@ const RandomGamePicker = () => {
   const [isPicking, setIsPicking] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
+  const [pickCounts, setPickCounts] = useState<{ [key: string]: number }>({})
 
   // Function to pick a random game
   const pickRandomGame = () => {
@@ -51,12 +64,17 @@ const RandomGamePicker = () => {
       clearInterval(interval)
       searchAudio.pause() // Stop the search sound
       const finalIndex = Math.floor(Math.random() * list.items.length)
-      setCurrentGame(list.items[finalIndex])
-      setFinalGame(list.items[finalIndex])
+      const selectedGame = list.items[finalIndex]
+      setCurrentGame(selectedGame)
+      setFinalGame(selectedGame)
       setShowConfetti(true)
       // Play tada sound
       const tadaAudio = new Audio(tadaSound)
       tadaAudio.play()
+      setPickCounts((prevCounts) => ({
+        ...prevCounts,
+        [selectedGame.id]: (prevCounts[selectedGame.id] || 0) + 1,
+      }))
       setTimeout(() => {
         setIsPicking(false)
         setShowConfetti(false)
@@ -83,6 +101,11 @@ const RandomGamePicker = () => {
             </p>
             {finalGame && (
               <>
+                <p>
+                  {pickCounts[finalGame.id] === 1
+                    ? 'First time picked!'
+                    : `Picked ${pickCounts[finalGame.id]} times`}
+                </p>
                 <button
                   onClick={() => setShowDetails(!showDetails)}
                   className={styles.moreInfoButton}
@@ -96,11 +119,18 @@ const RandomGamePicker = () => {
                     <p>Core Name: {finalGame.core_name}</p>
                     <p>CRC32: {finalGame.crc32}</p>
                     <p>DB Name: {finalGame.db_name}</p>
-                    <img
-                      src={finalGame.thumb_url}
-                      alt={finalGame.label}
-                      className={styles.thumbnail}
-                    />
+                    <div className={styles.thumbnailContainer}>
+                      {getAllImageSrcs(finalGame.thumb_url).map(
+                        (src, index) => (
+                          <img
+                            key={index}
+                            src={`thumbs/${src}`}
+                            alt={`${finalGame.label} ${index + 1}`}
+                            className={styles.thumbnail}
+                          />
+                        ),
+                      )}
+                    </div>
                   </div>
                 )}
               </>

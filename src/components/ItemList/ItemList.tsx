@@ -12,6 +12,9 @@ type Item = {
   crc32: string
   db_name: string
   thumb_url: string
+  released: string
+  developed_by: string
+  genre: string // Added genre property
 }
 
 type SortConfig = {
@@ -51,7 +54,6 @@ const ItemList = () => {
   return (
     <div>
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
           <thead>
@@ -141,6 +143,29 @@ const ItemList = () => {
                 )}
               </th>
               <th>Thumbnail</th>
+              <th>Released</th>
+              <th>Developed By</th>
+              <th
+                onClick={() => requestSort('genre')}
+                className={
+                  sortConfig.key === 'genre'
+                    ? sortConfig.direction === 'ascending'
+                      ? styles.sortAsc
+                      : styles.sortDesc
+                    : ''
+                }
+              >
+                Genre
+                {sortConfig.key === 'genre' && (
+                  <span
+                    className={
+                      sortConfig.direction === 'ascending'
+                        ? styles.sortAsc
+                        : styles.sortDesc
+                    }
+                  />
+                )}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -151,12 +176,19 @@ const ItemList = () => {
                 <td data-label="CRC32">{item.crc32}</td>
                 <td data-label="DB Name">{item.db_name}</td>
                 <td data-label="Thumbnail">
-                  <img
-                    src={`thumbs/${item.thumb_url}`}
-                    alt={item.label}
-                    width="50"
-                  />
+                  {['png', 'avif', 'jpg', 'jpeg', 'webp'].map((format) => (
+                    <img
+                      key={format}
+                      src={`thumbs/${item.thumb_url}/thumb.${format}`}
+                      alt={`${item.label} thumbnail`}
+                      width="50"
+                      onError={(e) => (e.currentTarget.style.display = 'none')}
+                    />
+                  ))}
                 </td>
+                <td data-label="Released">{item.released}</td>
+                <td data-label="Developed By">{item.developed_by}</td>
+                <td data-label="Genre">{item.genre}</td>
               </tr>
             ))}
           </tbody>
