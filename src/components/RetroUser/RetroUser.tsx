@@ -15,6 +15,7 @@ interface UserProfile {
 const RetroUser: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -31,6 +32,8 @@ const RetroUser: React.FC = () => {
           username: 'TheAspen',
         })
         setUserProfile(profile)
+      } catch (err) {
+        setError((err as Error).message)
       } finally {
         setLoading(false)
       }
@@ -40,6 +43,7 @@ const RetroUser: React.FC = () => {
   }, [])
 
   if (loading) return <div>Loading...</div>
+  if (error) return <div>Error: {error}</div>
 
   return (
     <div>
