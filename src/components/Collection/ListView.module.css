@@ -1,0 +1,46 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.header {
+  font-weight: bold;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.sortable::after {
+  content: ' ▼';
+  font-size: 0.8em;
+}
+
+.thumbnail {
+  width: 100px;
+  height: auto;
+}
+
+.grid > div {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+@media (max-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}

@@ -1,0 +1,9 @@
+.gameList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.listItem {
+  border-bottom: 1px solid var(--border-color);
+  padding: 10px 0;
+}

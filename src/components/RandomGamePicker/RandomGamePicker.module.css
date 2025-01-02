@@ -1,105 +1,119 @@
 .container {
-  text-align: center;
-  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - var(--header-height));
 }
 
 .button {
-  padding: 1em 2em;
-  font-size: 2em;
-  cursor: pointer;
-  background-color: #29a3a3;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  border: 2px solid #000;
-  box-shadow: 4px 4px 0px #000;
-  text-shadow: 1px 1px 0px #000;
-  cursor: var(--cursor);
+  padding: 3em 5em;
+  box-shadow:
+    5px 5px 0px #000,
+    10px 10px 0px #555;
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
 }
 
-.button:disabled {
-  background-color: #7f7f7f;
-
-  cursor: var(--cursor-not-allowed-url);
+.button.hidden {
+  display: none;
 }
 
-.button:hover:not(:disabled) {
-  background-color: #1e7a7a;
+.button:hover {
+  transform: translate(2px, 2px);
+  box-shadow:
+    3px 3px 0px #000,
+    6px 6px 0px #555;
 }
 
 .randomGame {
-  margin: 2em auto;
-  background-color: #e0e0e0;
-  box-shadow:
-    8px 8px 0px #000,
-    16px 16px 0px #555,
-    24px 24px 0px #888;
-  border: 2px solid #000;
-}
-
-.gameInfo {
-  padding: 2em;
-}
-
-.randomGame h2 {
-  font-size: 1em;
-  margin-bottom: 10px;
-  color: #2a2a2a;
-  margin: 0;
-  padding: 0.5em 1em;
-  background-color: #29a3a3;
-}
-
-.randomGame p {
-  margin: 5px 0;
-  color: #4d4d4d;
-}
-
-.finalGameLabel {
-  font-size: 24px;
-  font-weight: bold;
-  color: #29a3a3;
-}
-
-.thumbnail {
-  width: 100px;
-  height: auto;
-  margin-top: 10px;
+  font-size: 2em;
+  margin-top: 1em;
+  text-align: center;
 }
 
 .gameHeader {
-  font-size: 2rem;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 1rem;
+  font-size: 0.5em;
+  margin-top: 1em;
 }
 
-.moreInfoButton {
-  margin-top: 10px;
-  padding: 5px 10px;
+.gameInfo {
   font-size: 1em;
-  cursor: var(--cursor);
-  background-color: #29a3a3;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  border: 2px solid #000;
-  box-shadow: 2px 2px 0px #000;
-  text-shadow: 1px 1px 0px #000;
-}
-
-.moreInfoButton:hover {
-  background-color: #1e7a7a;
+  margin-top: 1em;
 }
 
 .finalGameDetails {
-  margin-top: 10px;
+  transform: perspective(600px) rotateX(30deg) rotateY(0deg);
+  transition: transform 0.5s ease;
 }
 
-.happyMessage {
-  font-size: 1.5em;
-  color: #29a3a3;
-  margin-top: 10px;
+.finalGameDetails:hover {
+  transform: perspective(600px) rotateX(28deg) rotateY(0deg);
+}
+
+.finalGameLabel {
+  transform: perspective(600px) rotateX(30deg) rotateY(0deg);
+  font-size: 2em;
+  text-shadow:
+    4px 4px 0 var(--primary-color),
+    8px 8px 0 var(--secondary-color);
+}
+
+.pickCount {
+  font-size: 0.2em;
+  margin-top: 1em;
+}
+
+.countdown {
+  font-size: 0.3em;
+  margin-top: 1em;
+}
+
+.tryAgainButton {
+  background-color: var(--secondary-color);
+  color: var(--background-color);
+  border: 2px solid var(--border-color);
+  padding: 0.5em 1em;
+  cursor: pointer;
+  font-family: var(--font-family);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+  margin-left: 1em;
+}
+
+@media (max-width: 600px) {
+  .button {
+    padding: 2em 3em;
+  }
+
+  .randomGame {
+    font-size: 1.5em;
+  }
+
+  .gameHeader {
+    font-size: 0.4em;
+  }
+
+  .gameInfo {
+    font-size: 0.9em;
+  }
+
+  .finalGameLabel {
+    font-size: 1.5em;
+  }
+
+  .pickCount {
+    font-size: 0.15em;
+  }
+
+  .countdown {
+    font-size: 0.25em;
+  }
+
+  .tryAgainButton {
+    padding: 0.4em 0.8em;
+  }
 }

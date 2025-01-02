@@ -1,0 +1,21 @@
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--controls-gap);
+  margin-block: var(--controls-margin-block);
+  padding-left: var(--controls-padding-left);
+  padding-right: var(--controls-padding-right);
+}
+
+.viewButtons {
+  display: flex;
+  gap: var(--view-buttons-gap);
+}
+
+.searchInput {
+  width: calc(100vw - var(--search-input-width-adjustment));
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: var(--search-input-border);
+  padding: var(--search-input-padding);
+}

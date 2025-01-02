@@ -1,9 +1,20 @@
 .logo {
   display: flex;
-  height: 2.5em;
   align-items: center;
+  height: var(--header-height);
 }
-.name {
-  font-weight: 700;
-  margin-left: 0.5em;
+
+.logo svg {
+  width: auto;
+
+  margin-right: 8px;
+}
+
+.logo .name {
+  margin-right: 8px;
+}
+
+.logo .version {
+  font-size: 0.8em;
+  color: gray;
 }

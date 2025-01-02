@@ -1,0 +1,41 @@
+.gridWrapper {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--grid-column-min-width), 1fr)
+  );
+  gap: var(--grid-gap);
+  padding: var(--grid-padding);
+}
+
+.card {
+  background-color: var(--background-color);
+  border: var(--card-border);
+  border-radius: var(--card-border-radius);
+  overflow: hidden;
+  box-shadow: var(--card-box-shadow);
+  transition: transform var(--card-transition);
+}
+
+.card:hover {
+  transform: scale(var(--card-hover-scale));
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+}
+
+.cardContent {
+  padding: var(--card-content-padding);
+}
+
+.cardTitle {
+  font-size: var(--card-title-font-size);
+  margin-bottom: var(--card-title-margin-bottom);
+}
+
+.cardDetails {
+  font-size: var(--card-details-font-size);
+  color: var(--text-color);
+}

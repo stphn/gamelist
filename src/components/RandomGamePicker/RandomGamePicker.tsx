@@ -1,22 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Confetti from 'react-confetti'
-import list from '../../data/gamelist.json'
+import { supabase } from '../../supabaseClient'
 import styles from './RandomGamePicker.module.css'
 import tadaSound from '../../assets/sound01.mp3'
 import uiSound from '../../assets/ui.mp3'
 import isPickingSound from '../../assets/searching.mp3'
-
-// Define the Game interface
-interface Game {
-  path: string
-  label: string
-  core_path: string
-  core_name: string
-  crc32: string
-  db_name: string
-  id: string
-  thumb_url: string
-}
+import { Game } from '../../types/Game'
+import { formatDate } from '../../utils/formatDate'
 
 const getAllImageSrcs = (thumbUrl: string): string[] => {
   try {
@@ -31,17 +21,29 @@ const getAllImageSrcs = (thumbUrl: string): string[] => {
 }
 
 const RandomGamePicker = () => {
-  // State variables
+  const [games, setGames] = useState<Game[]>([])
   const [currentGame, setCurrentGame] = useState<Game | null>(null)
   const [finalGame, setFinalGame] = useState<Game | null>(null)
   const [isPicking, setIsPicking] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
   const [pickCounts, setPickCounts] = useState<{ [key: string]: number }>({})
+  const [countdown, setCountdown] = useState(6) // 6 seconds total
+  const [firstAttempt, setFirstAttempt] = useState(true)
 
-  // Function to pick a random game
+  useEffect(() => {
+    const fetchGames = async () => {
+      const { data, error } = await supabase.from('games').select('*')
+      if (error) {
+        console.error('Error fetching games:', error)
+      } else {
+        setGames(data)
+      }
+    }
+    fetchGames()
+  }, [])
+
   const pickRandomGame = () => {
-    // Play click sound
     const clickAudio = new Audio(uiSound)
     clickAudio.play()
 
@@ -50,25 +52,36 @@ const RandomGamePicker = () => {
     setShowConfetti(false)
     setShowDetails(false)
 
-    // Play search sound
     const searchAudio = new Audio(isPickingSound)
     searchAudio.play()
 
     let currentIndex = 0
     const interval = setInterval(() => {
-      setCurrentGame(list.items[currentIndex])
-      currentIndex = (currentIndex + 1) % list.items.length
+      setCurrentGame(games[currentIndex])
+      currentIndex = (currentIndex + 1) % games.length
     }, 100)
+
+    setCountdown(6)
+    const countdownInterval = setInterval(() => {
+      setCountdown((prevCountdown) => {
+        if (prevCountdown <= 1) {
+          clearInterval(countdownInterval)
+          setIsPicking(false)
+          setShowConfetti(false)
+          return 0
+        }
+        return prevCountdown - 1
+      })
+    }, 1000)
 
     setTimeout(() => {
       clearInterval(interval)
-      searchAudio.pause() // Stop the search sound
-      const finalIndex = Math.floor(Math.random() * list.items.length)
-      const selectedGame = list.items[finalIndex]
+      searchAudio.pause()
+      const finalIndex = Math.floor(Math.random() * games.length)
+      const selectedGame = games[finalIndex]
       setCurrentGame(selectedGame)
       setFinalGame(selectedGame)
       setShowConfetti(true)
-      // Play tada sound
       const tadaAudio = new Audio(tadaSound)
       tadaAudio.play()
       setPickCounts((prevCounts) => ({
@@ -78,20 +91,15 @@ const RandomGamePicker = () => {
       setTimeout(() => {
         setIsPicking(false)
         setShowConfetti(false)
-      }, 3000) // Show the final result and confetti for 3 seconds
-    }, 3000) // Pick a game after 3 seconds
+        setFirstAttempt(false)
+      }, 3000)
+    }, 3000)
   }
 
   return (
     <div className={styles.container}>
       {showConfetti && <Confetti />}
-      <button
-        onClick={pickRandomGame}
-        disabled={isPicking}
-        className={styles.button}
-      >
-        {isPicking ? 'May Luck Be With You' : 'Pick Your Game'}
-      </button>
+
       {currentGame && (
         <div className={styles.randomGame}>
           <h2 className={styles.gameHeader}>Let's play ...</h2>
@@ -101,24 +109,32 @@ const RandomGamePicker = () => {
             </p>
             {finalGame && (
               <>
-                <p>
+                <p className={styles.pickCount}>
                   {pickCounts[finalGame.id] === 1
                     ? 'First time picked!'
                     : `Picked ${pickCounts[finalGame.id]} times`}
                 </p>
+
                 <button
                   onClick={() => setShowDetails(!showDetails)}
                   className={styles.moreInfoButton}
                 >
                   {showDetails ? 'Hide Info' : 'More Info'}
                 </button>
+                <button
+                  onClick={pickRandomGame}
+                  className={styles.tryAgainButton}
+                  disabled={countdown > 0}
+                >
+                  {countdown > 0
+                    ? `Retry in (${countdown}) second(s)`
+                    : 'Try Again'}
+                </button>
                 {showDetails && (
                   <div className={styles.finalGameDetails}>
-                    <p>Path: {finalGame.path}</p>
-                    <p>Core Path: {finalGame.core_path}</p>
-                    <p>Core Name: {finalGame.core_name}</p>
-                    <p>CRC32: {finalGame.crc32}</p>
-                    <p>DB Name: {finalGame.db_name}</p>
+                    <p>Released: {formatDate(finalGame.released)}</p>
+                    <p>Developed By: {finalGame.developed_by}</p>
+                    <p>Publisher: {finalGame.publisher}</p>
                     <div className={styles.thumbnailContainer}>
                       {getAllImageSrcs(finalGame.thumb_url).map(
                         (src, index) => (
@@ -137,6 +153,15 @@ const RandomGamePicker = () => {
             )}
           </div>
         </div>
+      )}
+      {firstAttempt && (
+        <button
+          onClick={pickRandomGame}
+          disabled={isPicking}
+          className={`${styles.button} ${isPicking ? styles.hidden : ''}`}
+        >
+          Pick Your Game
+        </button>
       )}
     </div>
   )
