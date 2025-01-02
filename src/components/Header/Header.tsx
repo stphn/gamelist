@@ -8,14 +8,11 @@ interface HeaderProps {
   toggleTheme: () => void
 }
 
-const Header: React.FC<HeaderProps> = ({ theme, toggleTheme }) => {
+const Header: React.FC<HeaderProps> = () => {
   return (
     <header className={styles.header}>
       <Logo />
-      <h1>Game List</h1>
-      <button onClick={toggleTheme}>
-        Switch to {theme === 'light' ? 'dark' : 'light'} mode
-      </button>
+
       <ThemeToggle />
     </header>
   )
