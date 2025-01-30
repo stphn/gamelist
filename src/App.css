@@ -1,9 +1,16 @@
 /* Default Dark Theme (Retro CRT) */
 @font-face {
-  font-family: 'CustomFont';
+  font-family: 'CustomHeaderFont';
   src:
     url('./assets/QuinqueFive.woff2') format('woff2'),
     url('./assets/QuinqueFive.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CustomCopyFont';
+  src: url('./assets/JetBrainsMono-Medium.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
@@ -16,7 +23,9 @@
   --secondary-color: #00ccff;
   --accent-color: #ffcc00;
   --border-color: #333333;
-  --font-family: 'CustomFont', sans-serif;
+  --font-headings: 'CustomHeaderFont', sans-serif;
+  --font-body: 'CustomCopyFont', monospace;
+
   --header-background-color: #7400ff;
   /* Cursors */
   --cursor: url('./assets/pointer.svg'), auto;
@@ -31,7 +40,6 @@
   --secondary-color: #3399ff;
   --accent-color: #f4d03f;
   --border-color: #e0e0e0;
-  --font-family: 'CustomFont', sans-serif;
   --header-background-color: #d5cf81;
 }
 
@@ -39,12 +47,22 @@
 body {
   background-color: var(--background-color);
   color: var(--text-color);
-  font-family: var(--font-family);
+  font-family: var(--font-body);
+  font-size: 1.2em;
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
   margin: 0;
   padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-headings);
 }
 
 button {
@@ -53,7 +71,7 @@ button {
   border: 2px solid var(--border-color);
   padding: 0.5em 1em;
   cursor: pointer;
-  font-family: var(--font-family);
+  font-family: var(--font-headings);
   transition:
     background-color 0.3s ease,
     color 0.3s ease,

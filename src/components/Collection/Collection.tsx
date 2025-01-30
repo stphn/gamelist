@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react'
-import { supabase } from '../../supabaseClient'
+import { useState } from 'react'
 import ListView from './ListView'
 import GridView from './GridView'
 import styles from './Collection.module.css'
-import { Game } from '../../types/Game'
+import useFetchGames from '../../hooks/useFetchGames'
 
 type ItemListProps = {
   searchTerm: string
@@ -12,23 +11,19 @@ type ItemListProps = {
 
 const Collection = ({ searchTerm, setSearchTerm }: ItemListProps) => {
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('list')
-  const [items, setItems] = useState<Game[]>([])
+  const { games, loading, error } = useFetchGames()
 
-  useEffect(() => {
-    const fetchGames = async () => {
-      const { data, error } = await supabase.from('games').select('*')
-      if (error) {
-        console.error('Error fetching games:', error)
-      } else {
-        setItems(data)
-      }
-    }
-    fetchGames()
-  }, [])
-
-  const filteredItems = items.filter((item) =>
+  const filteredItems = games.filter((item) =>
     item.label.toLowerCase().includes(searchTerm.toLowerCase()),
   )
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>
+  }
 
   return (
     <div>
@@ -46,9 +41,9 @@ const Collection = ({ searchTerm, setSearchTerm }: ItemListProps) => {
         </div>
       </div>
       {viewMode === 'list' ? (
-        <ListView items={filteredItems} />
+        <ListView games={filteredItems} />
       ) : (
-        <GridView items={filteredItems} />
+        <GridView games={filteredItems} />
       )}
     </div>
   )

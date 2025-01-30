@@ -1,33 +1,47 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../supabaseClient'
-import { Game } from '../../types/Game'
-import { formatDate } from '../../utils/formatDate'
-import { v4 as uuidv4 } from 'uuid'
 import { debounce } from 'lodash'
-import styles from './Games.module.css'
+import { authorization } from '../../retroachievements'
+import { getOrCreateAnonymousUserId } from '../../utils/localStorageUtils'
+import {
+  getUserCompletionProgress,
+  UserCompletionProgressEntity,
+} from '@retroachievements/api'
 
-function Games() {
-  const [games, setGames] = useState<Game[]>([])
-  const [loading, setLoading] = useState(true)
+import useFetchGames from '../../hooks/useFetchGames'
+import styles from './Games.module.css'
+import GameListItem from './GameListItem'
+
+type VoteStats = {
+  game_id: string
+  total_votes: number
+  average_rating: number
+}
+
+const Games = () => {
+  const { games, loading, error } = useFetchGames()
+
   const [votes, setVotes] = useState<{
     [key: string]: { average_rating: number; total_votes: number }
   }>({})
 
-  useEffect(() => {
-    const fetchGames = async () => {
-      console.log('Fetching games...')
-      const { data, error } = await supabase.from('games').select('*')
+  const [progressData, setProgressData] = useState<
+    UserCompletionProgressEntity[]
+  >([])
 
-      if (error) {
-        console.error('Error fetching games:', error.message)
-      } else {
-        console.log('Games fetched:', data)
-        setGames(data || [])
+  useEffect(() => {
+    const fetchProgressData = async () => {
+      try {
+        const { results } = await getUserCompletionProgress(authorization, {
+          username: authorization.username,
+        })
+        setProgressData(results)
+      } catch (error) {
+        console.error('Error fetching progress data:', error)
       }
-      setLoading(false)
     }
 
-    fetchGames()
+    fetchProgressData()
   }, [])
 
   const fetchVotes = async () => {
@@ -38,11 +52,6 @@ function Games() {
       console.error('Error fetching votes:', error.message)
     } else {
       console.log('Votes fetched:', data)
-      interface VoteStats {
-        game_id: string
-        total_votes: number
-        average_rating: number
-      }
 
       const formattedVotes = data.reduce(
         (
@@ -86,16 +95,7 @@ function Games() {
   }, [])
 
   useEffect(() => {
-    if (!localStorage.getItem('anonymous_user_id')) {
-      const newUserId = uuidv4()
-      localStorage.setItem('anonymous_user_id', newUserId)
-      console.log('New anonymous user ID set:', newUserId)
-    } else {
-      console.log(
-        'Anonymous user ID exists:',
-        localStorage.getItem('anonymous_user_id'),
-      )
-    }
+    getOrCreateAnonymousUserId()
   }, [])
 
   const handleVote = debounce(async (gameId: string, rating: number) => {
@@ -120,33 +120,29 @@ function Games() {
 
   if (loading) return <p>Loading...</p>
 
+  if (error) {
+    return <div>Error: {error}</div>
+  }
+
   return (
     <div className="App">
       <h1>GameList</h1>
+
       <ul className={styles.gameList}>
-        {games.map((game) => (
-          <li key={game.id} className={styles.listItem}>
-            <strong>{game.label}</strong> - {game.genre} - {game.core_name} -{' '}
-            {formatDate(game.released)} - {game.developed_by} - {game.publisher}{' '}
-            - {game.thumb_url}
-            <div>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  onClick={() => handleVote(game.id, star)}
-                  style={{
-                    color:
-                      votes[game.id]?.average_rating >= star ? 'gold' : 'gray',
-                  }}
-                >
-                  ★
-                </button>
-              ))}
-              <span>Rating: {votes[game.id]?.average_rating || 0} stars</span>
-              <span>Total Votes: {votes[game.id]?.total_votes || 0}</span>
-            </div>
-          </li>
-        ))}
+        {games.map((game) => {
+          const progress = progressData.find(
+            (item) => item.gameId === game.retroachievements_id,
+          )
+          return (
+            <GameListItem
+              key={game.id}
+              game={game}
+              progress={progress}
+              votes={votes}
+              handleVote={handleVote}
+            />
+          )
+        })}
       </ul>
     </div>
   )

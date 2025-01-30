@@ -121,15 +121,20 @@ const RandomGamePicker = () => {
                 >
                   {showDetails ? 'Hide Info' : 'More Info'}
                 </button>
-                <button
-                  onClick={pickRandomGame}
-                  className={styles.tryAgainButton}
-                  disabled={countdown > 0}
-                >
-                  {countdown > 0
-                    ? `Retry in (${countdown}) second(s)`
-                    : 'Try Again'}
-                </button>
+                <span>
+                  <button
+                    onClick={pickRandomGame}
+                    className={
+                      countdown > 0
+                        ? styles.disabledButton
+                        : styles.tryAgainButton
+                    }
+                    disabled={countdown > 0}
+                  >
+                    Try Again
+                  </button>
+                  <p>{countdown > 0 ? `in (${countdown}) second(s)` : 'now'}</p>
+                </span>
                 {showDetails && (
                   <div className={styles.finalGameDetails}>
                     <p>Released: {formatDate(finalGame.released)}</p>

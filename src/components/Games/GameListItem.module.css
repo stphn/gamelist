@@ -1,0 +1,30 @@
+.listItem {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: var(--background-color);
+}
+
+.stars {
+  display: inline-block;
+}
+
+.star {
+  font-size: 24px;
+  cursor: pointer;
+  color: gray;
+  transition: color 0.2s;
+}
+
+.star.gold {
+  color: gold;
+}
+
+.star.half::before {
+  content: '★';
+  position: absolute;
+  color: gold;
+  width: 50%;
+  overflow: hidden;
+}

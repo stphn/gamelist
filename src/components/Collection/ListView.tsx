@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styles from './ListView.module.css'
-import { formatDate } from '../../utils/formatDate'
 import { Game } from '../../types/Game'
+import { formatDate } from '../../utils/formatDate'
 
 type SortConfig = {
   key: keyof Game
@@ -9,20 +9,22 @@ type SortConfig = {
 }
 
 type ListViewProps = {
-  items: Game[]
+  games: Game[]
 }
 
-const ListView = ({ items }: ListViewProps) => {
+const ListView = ({ games }: ListViewProps) => {
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     key: 'id',
     direction: 'ascending',
   })
 
-  const sortedItems = [...items].sort((a, b) => {
-    if (a[sortConfig.key] < b[sortConfig.key]) {
+  const sortedItems = [...games].sort((a, b) => {
+    const aValue = a[sortConfig.key] ?? ''
+    const bValue = b[sortConfig.key] ?? ''
+    if (aValue < bValue) {
       return sortConfig.direction === 'ascending' ? -1 : 1
     }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
+    if (aValue > bValue) {
       return sortConfig.direction === 'ascending' ? 1 : -1
     }
     return 0
@@ -48,9 +50,21 @@ const ListView = ({ items }: ListViewProps) => {
         </div>
         <div
           className={`${styles.header} ${styles.sortable}`}
+          onClick={() => requestSort('systems')}
+        >
+          Systems
+        </div>
+        <div
+          className={`${styles.header} ${styles.sortable}`}
           onClick={() => requestSort('core_name')}
         >
           Core Name
+        </div>
+        <div
+          className={`${styles.header} ${styles.sortable}`}
+          onClick={() => requestSort('systems')}
+        >
+          DB Name
         </div>
         <div
           className={`${styles.header} ${styles.sortable}`}
@@ -70,30 +84,25 @@ const ListView = ({ items }: ListViewProps) => {
         >
           Genre
         </div>
-        <div
-          className={`${styles.header} ${styles.sortable}`}
-          onClick={() => requestSort('publisher')}
-        >
-          Publisher
-        </div>
         <div className={styles.header}>Thumbnail</div>
-        {sortedItems.map((item) => (
-          <div key={item.id}>
-            <div>{item.label}</div>
-            <div>{item.core_name}</div>
-            <div>{formatDate(item.released)}</div>
-            <div>{item.developed_by}</div>
-            <div>{item.genre}</div>
-            <div>{item.publisher}</div>
+
+        {sortedItems.map((game) => (
+          <div key={game.id} className={styles.row}>
+            <div>{game.label}</div>
+            <div>{game.core_name}</div>
+            <div>{game.publisher}</div>
+            <div>{formatDate(game.released)}</div>
+            <div>{game.developed_by}</div>
+            <div>{game.genre}</div>
+            <div>System: {game.systems?.name || 'Unknown'}</div>
             <div>
               {['png', 'avif', 'jpg', 'jpeg', 'webp'].map((extension) => (
                 <img
                   key={extension}
-                  src={`thumbs/${item.thumb_url}/thumb.${extension}`}
-                  alt={item.label}
+                  src={`/thumb/${game.thumb_url}.${extension}`}
+                  alt={game.label}
                   className={styles.thumbnail}
                   onError={(e) => (e.currentTarget.style.display = 'none')}
-                  width={100}
                 />
               ))}
             </div>

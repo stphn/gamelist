@@ -31,6 +31,7 @@
   font-size: 2em;
   margin-top: 1em;
   text-align: center;
+  font-family: var(--font-headings);
 }
 
 .gameHeader {
@@ -58,6 +59,9 @@
   text-shadow:
     4px 4px 0 var(--primary-color),
     8px 8px 0 var(--secondary-color);
+
+  font-family: var(--font-headings);
+  max-width: 80vw;
 }
 
 .pickCount {
@@ -76,12 +80,21 @@
   border: 2px solid var(--border-color);
   padding: 0.5em 1em;
   cursor: pointer;
-  font-family: var(--font-family);
+
   transition:
     background-color 0.3s ease,
     color 0.3s ease,
     border-color 0.3s ease;
   margin-left: 1em;
+}
+
+.disabledButton {
+  background-color: var(--border-color);
+  color: var(--background-color);
+  border: 2px solid var(--border-color);
+  padding: 0.5em 1em;
+  margin-left: 1em;
+  cursor: not-allowed;
 }
 
 @media (max-width: 600px) {

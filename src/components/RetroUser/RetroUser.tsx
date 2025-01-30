@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { buildAuthorization, getUserProfile } from '@retroachievements/api'
 
+// Define the UserProfile type
 interface UserProfile {
   user: string
   memberSince: string
@@ -9,37 +9,32 @@ interface UserProfile {
   totalPoints: number
   totalTruePoints: number
   motto: string
-  // Add more fields as needed
 }
 
+import { userProfile as fetchUserProfile } from '../../retroachievements.ts'
+
 const RetroUser: React.FC = () => {
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
+  const [profile, setProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
+    const fetchUserProfileData = async () => {
       try {
-        const username = import.meta.env.VITE_RA_USERNAME
-        const webApiKey = import.meta.env.VITE_RA_API_KEY
-
-        if (!username || !webApiKey) {
-          throw new Error('Missing Retroachievements environment variables')
+        const data = await fetchUserProfile
+        setProfile(data)
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message)
+        } else {
+          setError(String(error))
         }
-
-        const authorization = buildAuthorization({ username, webApiKey })
-        const profile = await getUserProfile(authorization, {
-          username: 'TheAspen',
-        })
-        setUserProfile(profile)
-      } catch (err) {
-        setError((err as Error).message)
       } finally {
         setLoading(false)
       }
     }
 
-    fetchUserProfile()
+    fetchUserProfileData()
   }, [])
 
   if (loading) return <div>Loading...</div>
@@ -49,25 +44,25 @@ const RetroUser: React.FC = () => {
     <div>
       <h2>User Profile</h2>
       <p>
-        <strong>Username:</strong> {userProfile?.user}
+        <strong>Username:</strong> {profile?.user}
       </p>
       <p>
-        <strong>Member Since:</strong> {userProfile?.memberSince}
+        <strong>Member Since:</strong> {profile?.memberSince}
       </p>
       <p>
-        <strong>Rich Presence Message:</strong> {userProfile?.richPresenceMsg}
+        <strong>Rich Presence Message:</strong> {profile?.richPresenceMsg}
       </p>
       <p>
-        <strong>Last Game ID:</strong> {userProfile?.lastGameId}
+        <strong>Last Game ID:</strong> {profile?.lastGameId}
       </p>
       <p>
-        <strong>Total Points:</strong> {userProfile?.totalPoints}
+        <strong>Total Points:</strong> {profile?.totalPoints}
       </p>
       <p>
-        <strong>Total True Points:</strong> {userProfile?.totalTruePoints}
+        <strong>Total True Points:</strong> {profile?.totalTruePoints}
       </p>
       <p>
-        <strong>Motto:</strong> {userProfile?.motto}
+        <strong>Motto:</strong> {profile?.motto}
       </p>
       {/* Add more fields as needed */}
     </div>
